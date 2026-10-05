@@ -33,6 +33,11 @@ export async function runDaily({ config, store, search, send, now = () => new Da
     const keys = [...new Set(ranked.flatMap(identityKeys))];
     const seen = await store.seen(keys);
     const unseen = ranked.filter(job => !identityKeys(job).some(key => seen.has(key)));
+    const unseenIds = new Set(unseen.map(job => job.id));
+    await store.saveSnapshot({
+      date: clock.date, searchedAt: now().toISOString(), warnings: result.warnings,
+      jobs: ranked.map(job => ({ ...job, isNew: unseenIds.has(job.id) })),
+    }, token);
     const jobs = unseen.slice(0, profile.maxJobsPerEmail);
     pending = {
       id: `jobs/${randomUUID()}`, date: clock.date, createdAt: now().toISOString(),

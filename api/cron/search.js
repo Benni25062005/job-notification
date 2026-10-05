@@ -1,15 +1,11 @@
-import { timingSafeEqual } from 'node:crypto';
+import { authorized } from '../../src/auth.js';
 import { readConfig } from '../../src/config.js';
 import { searchJobs } from '../../src/adzuna.js';
 import { sendEmail } from '../../src/email.js';
 import { RedisStore } from '../../src/store.js';
 import { runDaily } from '../../src/run.js';
 
-export function authorized(header, secret) {
-  if (!secret || secret.length < 32 || typeof header !== 'string') return false;
-  const actual = Buffer.from(header), expected = Buffer.from(`Bearer ${secret}`);
-  return actual.length === expected.length && timingSafeEqual(actual, expected);
-}
+export { authorized };
 
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');

@@ -11,5 +11,5 @@ function check(directory) {
     }
   }
 }
-['src', 'api', 'scripts', 'tests'].forEach(check);
+['src', 'api', 'scripts', 'tests', 'public'].forEach(check);
 console.log('Syntaxprüfung erfolgreich.');

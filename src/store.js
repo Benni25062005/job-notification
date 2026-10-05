@@ -31,6 +31,19 @@ export class RedisStore {
   async acquire(token) { return await this.command('SET', this.key('lock'), token, 'NX', 'EX', 600) === 'OK'; }
   async release(token) { await this.command('EVAL', scripts.release, 1, this.key('lock'), token); }
   async completed(date) { return Boolean(await this.command('GET', this.key(`done:${date}`))); }
+  async delivery(date) {
+    const raw = await this.command('GET', this.key(`done:${date}`));
+    return raw ? JSON.parse(raw) : null;
+  }
+  async snapshot() {
+    const raw = await this.command('GET', this.key('dashboard'));
+    return raw ? JSON.parse(raw) : null;
+  }
+  async saveSnapshot(snapshot, token) {
+    const script = `if redis.call('GET', KEYS[1]) ~= ARGV[1] then return 0 end redis.call('SET', KEYS[2], ARGV[2], 'EX', 604800) return 1`;
+    const result = await this.command('EVAL', script, 2, this.key('lock'), this.key('dashboard'), token, JSON.stringify(snapshot));
+    if (result !== 1) throw new Error('Suchergebnisse konnten nicht gespeichert werden.');
+  }
   async pending() {
     const raw = await this.command('GET', this.key('pending'));
     return raw ? JSON.parse(raw) : null;

@@ -43,7 +43,7 @@ npm run preview
 
 ## Auf Vercel einrichten
 
-1. Repository als Vercel-Projekt importieren. Framework: **Other**, Node.js: **24.x**, kein Build-Befehl. `vercel.json` setzt das statische Ausgabeverzeichnis auf `public`; der geschützte API-Endpunkt liegt unter `/api/cron/search`. Es gibt bewusst kein Dashboard.
+1. Repository als Vercel-Projekt importieren. Framework: **Other**, Node.js: **24.x**, kein Build-Befehl. `vercel.json` setzt das statische Ausgabeverzeichnis auf `public`; der geschützte API-Endpunkt liegt unter `/api/cron/search`. Die Startseite unter `/` zeigt die Stellenübersicht.
 2. Einen eigenen [Adzuna-API-Zugang](https://developer.adzuna.com/signup) registrieren. API-ID und API-Key hinterlegen. Zugriff und konkrete Abdeckung mit `npm run preview` prüfen.
 3. Eine **Upstash Redis**-Datenbank über den Vercel Marketplace oder direkt bei Upstash verbinden. REST-URL und Schreib-Token eintragen. Bei anders benannten automatisch angelegten Variablen die Werte den Namen unten zuordnen. Eine dauerhafte Datenbank ohne Verdrängung der Versandhistorie verwenden.
 4. **Resend** verbinden. Einen zulässigen Absender und die eigene Empfängeradresse eintragen. Für eine eigene Absenderdomain die Domain in Resend verifizieren. Der Testabsender `onboarding@resend.dev` darf nur an die zum Resend-Konto gehörende Adresse senden.
@@ -78,7 +78,7 @@ Die Hobby-Ausführung kann innerhalb der geplanten Stunde beginnen. Suche und Ve
 
 Der Versandablauf ist: globale Sperre → ggf. offenen Bericht abschließen → suchen → bereits versendete Stellen abgleichen → unveränderlichen Bericht speichern → Resend mit Idempotency-Key aufrufen → Versand-ID speichern → Stellen und Tag atomar als versendet verbuchen.
 
-Redis speichert dauerhaft nur die Identitäten versendeter Stellen. Tagesbestätigungen bleiben 90 Tage erhalten; der offene Bericht einschließlich Empfänger und Mailinhalt bleibt bis zum Abschluss gespeichert. Die globale Sperre läuft nach zehn Minuten ab, länger als die maximale Vercel-Laufzeit von fünf Minuten. Redis muss privat bleiben.
+Redis speichert dauerhaft die Identitäten versendeter Stellen. Für das Dashboard bleibt zusätzlich der letzte Suchlauf mit den bewerteten Anzeigen sieben Tage gespeichert. Tagesbestätigungen bleiben 90 Tage erhalten; der offene Bericht einschließlich Empfänger und Mailinhalt bleibt bis zum Abschluss gespeichert. Die globale Sperre läuft nach zehn Minuten ab, länger als die maximale Vercel-Laufzeit von fünf Minuten. Redis muss privat bleiben.
 
 Vercel wiederholt fehlgeschlagene Cron-Aufrufe nicht automatisch. Ein autorisierter erneuter GET-Aufruf im Mitternachtsfenster kann einen fehlgeschlagenen Lauf fortsetzen. Bereits von Resend bestätigte Berichte werden dabei nicht erneut gesendet.
 
@@ -111,3 +111,19 @@ Kein blindes Löschen der Versandhistorie: Das würde bereits verschickte Stelle
 - [Resend Versand](https://resend.com/docs/api-reference/emails/send-email), [Idempotency](https://resend.com/docs/dashboard/emails/idempotency-keys)
 
 Dieses Projekt dient der persönlichen Stellensuche. Quelle der Stellenangaben ist „The Adzuna API“. Bei einer späteren öffentlichen Veröffentlichung von Stellenanzeigen die zusätzlichen Adzuna-Vorgaben zur Darstellung und Kennzeichnung berücksichtigen.
+
+
+## Dashboard
+
+Die Haupt-URL öffnet jetzt eine responsive Stellenübersicht mit Suche, Regions- und Passungsfiltern, Sortierung, Detailansicht sowie einer lokalen Merkliste. Der Zeitpunkt der letzten Suche, Quellenwarnungen und der Versandstatus werden aus gespeicherten Daten angezeigt. Ein Klick auf „Aktualisieren“ lädt nur diesen Stand; er startet keine Suche und sendet keine E-Mail.
+
+Für den privaten Lesezugriff die zusätzliche Umgebungsvariable `DASHBOARD_TOKEN` in Vercel auf einen **zufälligen Schlüssel mit mindestens 32 Zeichen** setzen und neu deployen. Einen eigenständigen Schlüssel verwenden, nicht `CRON_SECRET`. Unter „Zugang“ im Dashboard eingeben. Er wird im Session Storage des Tabs gehalten und beim Abmelden entfernt; Wiederherstellungsfunktionen des Browsers können Tabs und deren Sitzung wiederherstellen. Keine Zugangsdaten werden in Links oder im Repository hinterlegt.
+
+Ohne eingerichtete Quellen erscheint ein ehrlicher Leerzustand. „Demo ansehen“ zeigt ausschließlich gekennzeichnete, erfundene Beispiele. Demo-Merkliste und echte Merkliste sind getrennt. Die Merkliste speichert lokal nur Stellen-IDs und zeigt gemerkte Stellen aus dem aktuellen Suchlauf; sie ist kein dauerhaftes Anzeigenarchiv.
+
+```bash
+npm run dev
+# http://localhost:3000
+```
+
+Der lokale UI-Server unterstützt `/api/dashboard`, führt aber keine Cron-Läufe und keinen E-Mail-Versand aus. Die Anzeige echter Ergebnisse setzt einen erfolgreichen Suchlauf mit der neuen Version voraus. Alte Versandhistorie bleibt erhalten. Nach sieben Tagen ohne erfolgreichen Suchlauf läuft der Dashboard-Snapshot ab; veraltete Ergebnisse werden ab 36 Stunden gekennzeichnet.

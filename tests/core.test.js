@@ -23,6 +23,7 @@ class MemoryStore {
   async completed(date) { return this.days.has(date); }
   async pending() { return structuredClone(this.record); }
   async seen(keys) { return new Set(keys.filter(key => this.sent.has(key))); }
+  async saveSnapshot(snapshot, token) { assert.equal(token, this.lock); this.latestSnapshot = structuredClone(snapshot); }
   async save(pending, token) { assert.equal(token, this.lock); this.record = structuredClone(pending); }
   async commit(pending, token) {
     assert.equal(token, this.lock);
@@ -111,6 +112,8 @@ test('daily run sends once, persists IDs and skips already sent ads on the next 
   const store = new MemoryStore(), mails = [];
   const options = { config, store, now: atMidnight, search: async () => ({ jobs: [base], warnings: [] }), send: async (payload, key) => { mails.push({ payload, key }); return 'email-id'; } };
   assert.equal((await runDaily(options)).count, 1);
+  assert.equal(store.latestSnapshot.jobs[0].isNew, true);
+  assert.equal(store.latestSnapshot.searchedAt, atMidnight().toISOString());
   assert.equal((await runDaily(options)).status, 'already-completed');
   assert.equal(mails.length, 1);
   assert.equal((await runDaily({ ...options, now: () => new Date('2026-10-05T22:30:00Z') })).count, 0);

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#f5f7f8">
+  <meta name="description" content="Deine persönliche Übersicht für Entwicklerstellen in Vorarlberg und am Bodensee.">
+  <title>Jobradar · Deine Stellenübersicht</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Zum Inhalt</a>
+  <svg class="sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></symbol>
+    <symbol id="bookmark" viewBox="0 0 24 24"><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16l-6-4z"/></symbol>
+    <symbol id="sliders" viewBox="0 0 24 24"><path d="M4 7h16M4 17h16M8 4v6M16 14v6"/></symbol>
+    <symbol id="search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="7"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+    <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+    <symbol id="external" viewBox="0 0 24 24"><path d="M14 3h7v7M21 3 10 14M10 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5"/></symbol>
+    <symbol id="clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="refresh" viewBox="0 0 24 24"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M6 6a8 8 0 0 1 14 6M4 12a8 8 0 0 0 14 6"/></symbol>
+    <symbol id="mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m3 7 9 6 9-6"/></symbol>
+    <symbol id="check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+    <symbol id="lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3"/></symbol>
+    <symbol id="spark" viewBox="0 0 24 24"><path d="m12 3 2.7 6.3L21 12l-6.3 2.7L12 21l-2.7-6.3L3 12l6.3-2.7z"/></symbol>
+  </svg>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="/" aria-label="Jobradar Startseite"><span class="brand-mark"><span></span></span>jobradar<span class="brand-dot">.</span></a>
+      <p class="sidebar-label">DEIN ARBEITSPLATZ</p>
+      <nav class="main-nav" aria-label="Hauptnavigation">
+        <button class="nav-item active" data-view="all" aria-current="page"><svg><use href="#grid"/></svg><span>Übersicht</span></button>
+        <button class="nav-item" data-view="saved"><svg><use href="#bookmark"/></svg><span>Merkliste</span><span class="nav-count" id="saved-count">0</span></button>
+        <button class="nav-item" id="profile-button"><svg><use href="#sliders"/></svg><span>Suchprofil</span></button>
+      </nav>
+      <div class="sidebar-region"><p class="sidebar-label">DEIN SUCHGEBIET</p><div class="region-line"><span class="region-dot"></span><div><strong>Vorarlberg</strong><small>Unterland bis Feldkirch</small></div></div><div class="region-line"><span class="region-dot blue"></span><div><strong>Bodenseeregion</strong><small>Lindau bis Ravensburg</small></div></div></div>
+      <div class="sidebar-bottom"><div class="night-card"><span class="night-icon"><svg><use href="#clock"/></svg></span><strong>Neue Chancen über Nacht</strong><p>Die tägliche Suche ist für<br>00:00–01:00 Uhr vorgesehen.</p><span id="automation-state" class="subtle-status">Einrichtung ausstehend</span></div><div class="personal-note"><span class="avatar">J</span><div><strong>Deine persönliche Suche</strong><small>Software & Webentwicklung</small></div></div></div>
+    </aside>
+    <main id="main" tabindex="-1">
+      <header class="topbar"><div class="breadcrumb">Dein Arbeitsbereich <span>/</span> <strong id="breadcrumb-title">Übersicht</strong></div><div class="top-actions"><button class="button quiet" id="refresh-button" title="Gespeicherten Stand laden; startet keine neue Suche"><svg><use href="#refresh"/></svg><span>Aktualisieren</span></button><button class="button" id="access-button"><svg><use href="#lock"/></svg><span>Zugang</span></button></div></header>
+      <div id="demo-banner" class="notice demo-notice" hidden><span><strong>Demoansicht</strong> · Alle Stellen sind erfundene Beispiele.</span><button id="leave-demo">Demo beenden <span aria-hidden="true">×</span></button></div>
+      <section class="hero" aria-labelledby="page-title"><div class="hero-copy"><p class="eyebrow"><span></span> DEIN PERSÖNLICHER JOBRADAR</p><h1 id="page-title">Neue Chancen.<br><span>Ganz in deiner Nähe.</span></h1><p>Entwicklerstellen in deiner Region – gesammelt,<br class="desktop-break"> nach Passung sortiert und für dich im Blick.</p><div class="hero-pills"><span><svg><use href="#pin"/></svg>Vorarlberg & Bodensee</span><span><svg><use href="#spark"/></svg>Fokus Berufseinstieg</span></div></div><div class="radar-art" aria-hidden="true"><div class="radar-ring ring-one"></div><div class="radar-ring ring-two"></div><div class="radar-ring ring-three"></div><div class="radar-axis axis-one"></div><div class="radar-axis axis-two"></div><div class="radar-center"><svg><use href="#search"/></svg></div><div class="radar-point point-a"></div><div class="radar-point point-b"></div><div class="radar-label label-a"><span class="tiny-avatar">&lt;/&gt;</span>Dein nächster Schritt<svg><use href="#arrow"/></svg></div><div class="radar-label label-b"><span class="mini-check">✓</span>Passt zu dir</div><div class="radar-location">47° N · 9° O</div></div></section>
+      <section class="stats" aria-label="Zusammenfassung"><div class="stat"><span class="stat-label">Gefundene Stellen<svg><use href="#grid"/></svg></span><div class="stat-value" id="stat-total">—</div><span class="stat-caption">im letzten Suchlauf</span></div><div class="stat green-stat"><span class="stat-label">Sehr passend<svg><use href="#spark"/></svg></span><div class="stat-value" id="stat-best">—</div><span class="stat-caption">deine besten Treffer</span></div><div class="stat"><span class="stat-label">Neu entdeckt<span class="little-dot"></span></span><div class="stat-value" id="stat-new">—</div><span class="stat-caption">im letzten Suchlauf erstmals dabei</span></div><div class="stat"><span class="stat-label">Letzte Suche<svg><use href="#clock"/></svg></span><div class="stat-value date-value" id="stat-date">Noch offen</div><span class="stat-caption" id="stat-time">Wartet auf den ersten Suchlauf</span></div></section>
+      <div id="status-notice" class="notice" role="status" hidden></div>
+      <section class="jobs-section" aria-labelledby="jobs-heading"><div class="section-title"><div><h2 id="jobs-heading">Stellen entdecken <span id="result-count" class="count-badge">0</span></h2><p id="list-caption">Ein Überblick. Alle Möglichkeiten.</p></div><span class="source-label">Datenquelle <strong>Adzuna</strong></span></div>
+        <div class="search-toolbar"><label class="search-field"><svg><use href="#search"/></svg><span class="sr-only">Stellen durchsuchen</span><input id="query" type="search" placeholder="Jobtitel, Unternehmen oder Technologie suchen …" autocomplete="off"></label><label class="select-field"><span class="sr-only">Region</span><select id="region"><option value="all">Alle Regionen</option><option value="at">Österreich</option><option value="de">Deutschland</option></select></label><label class="select-field sort-field"><span class="sr-only">Sortierung</span><select id="sort"><option value="score">Beste Passung</option><option value="date">Neueste Anzeigen</option><option value="company">Unternehmen A–Z</option></select></label></div>
+        <div class="filter-row"><div class="category-filters" role="group" aria-label="Nach Passung filtern"><button class="filter active" data-category="all" aria-pressed="true">Alle Stellen <span>0</span></button><button class="filter" data-category="Sehr passend" aria-pressed="false"><i class="filter-dot green"></i>Sehr passend <span>0</span></button><button class="filter" data-category="Potenziell passend" aria-pressed="false"><i class="filter-dot amber"></i>Potenziell passend <span>0</span></button><button class="filter" data-category="Weniger passend" aria-pressed="false"><i class="filter-dot gray"></i>Weniger passend <span>0</span></button></div><label class="new-filter"><input type="checkbox" id="only-new">Nur neue</label></div>
+        <div id="jobs-list" class="jobs-list" aria-live="polite" aria-busy="false"></div>
+        <div id="empty-state" class="empty-state"><span class="empty-icon"><svg><use href="#search"/></svg></span><h3 id="empty-title">Dein Jobradar steht bereit.</h3><p id="empty-copy">Verbinde deinen Zugang, um deine persönlichen Suchergebnisse zu sehen.<br>Oder entdecke die Oberfläche mit Beispieldaten.</p><div class="empty-actions"><button id="empty-primary" class="button primary">Zugang öffnen <svg><use href="#arrow"/></svg></button><button id="demo-button" class="button">Demo ansehen</button></div></div>
+      </section>
+      <footer class="page-footer"><span><i></i>Dein nächster Schritt beginnt hier.</span><span id="footer-status">Persönliche Stellensuche · keine öffentlichen Profildaten</span></footer>
+    </main>
+  </div>
+  <dialog id="access-dialog" class="access-dialog"><button class="icon-button dialog-close" data-close="access-dialog" aria-label="Schließen"><svg><use href="#close"/></svg></button><span class="dialog-icon"><svg><use href="#lock"/></svg></span><p class="eyebrow">DEIN PERSÖNLICHER BEREICH</p><h2>Deinen Jobradar öffnen</h2><p>Mit deinem Zugangsschlüssel lädst du die gespeicherten Ergebnisse deiner Suche.</p><form id="access-form"><label for="access-token">Zugangsschlüssel</label><input id="access-token" type="password" placeholder="Deinen Schlüssel eingeben" autocomplete="off" required minlength="32"><p id="access-error" class="form-error" role="alert"></p><button class="button primary" type="submit">Ergebnisse laden <svg><use href="#arrow"/></svg></button></form><button id="logout-button" class="button logout-button" hidden>Zugang schließen</button><details class="setup-help"><summary>Wo finde ich meinen Schlüssel?</summary><p>Lege in Vercel die Umgebungsvariable <code>DASHBOARD_TOKEN</code> mit einem zufälligen Schlüssel von mindestens 32 Zeichen an und deploye erneut. Verwende einen anderen Schlüssel als für den automatischen Suchlauf.</p><a href="https://github.com/Benni25062005/job-notification#dashboard" target="_blank" rel="noopener noreferrer">Einrichtung im Repository ansehen ↗</a></details><p class="privacy-note">Der Schlüssel wird in der Sitzung dieses Tabs gespeichert. Mit „Zugang schließen“ meldest du dich ab.</p></dialog>
+  <dialog id="profile-dialog"><button class="icon-button dialog-close" data-close="profile-dialog" aria-label="Schließen"><svg><use href="#close"/></svg></button><p class="eyebrow">SO SUCHT DEIN JOBRADAR</p><h2>Dein Suchprofil</h2><p>Auf deinen Berufseinstieg und deine Wunschregion abgestimmt.</p><div class="profile-block"><h3>Software & Webentwicklung</h3><p>Frontend, Backend und Fullstack. Junior-Stellen bekommen Vorrang; höhere Anforderungen bleiben mit geringerer Passung sichtbar.</p></div><div class="profile-block"><h3>Deine Region</h3><p>Vorarlberger Unterland und Rheintal bis Feldkirch. Auf deutscher Seite Lindau, Friedrichshafen, Wangen und Ravensburg/Weingarten.</p><small>Die Suche verwendet großzügige Umkreise. Weiter entfernte und unklare Standorte werden niedriger bewertet.</small></div><div class="profile-block"><h3>Deine Technologien</h3><div class="tags" id="profile-skills"></div></div><div class="profile-block"><h3>Jeden Tag eine neue Übersicht</h3><p>Suche zwischen 00:00 und 01:00 Uhr Ortszeit, einschließlich Sommer- und Winterzeit. Anzeigen aus den letzten 30 Tagen.</p></div><p class="privacy-note">Das Suchprofil wird im Projekt konfiguriert. Die Filter auf dieser Seite ändern nur deine Ansicht.</p></dialog>
+  <dialog id="job-dialog" class="job-dialog"><button class="icon-button dialog-close" data-close="job-dialog" aria-label="Schließen"><svg><use href="#close"/></svg></button><div id="job-detail"></div></dialog>
+  <div class="toast" id="toast" role="status" hidden></div>
+  <noscript><p class="notice">Bitte aktiviere JavaScript, um die Stellenübersicht und Filter zu verwenden.</p></noscript>
+</body>
+</html>
